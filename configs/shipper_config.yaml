@@ -1,0 +1,54 @@
+log2console: true
+timesFilePath: "manifest.yaml"
+
+# Golang date formation
+#    year: 2006
+#   month: 01
+#     day: 02
+#   hours: 15
+# minutes: 04
+# seconds: 05
+logging:
+  script: "script_log/shipperLogs_{2006010215}.log"
+  files: "script_log/processedFiles_{2006010215}.log"
+
+ftps:
+- name: "test"
+  hostname: "127.0.0.1"
+  port: 21
+  username: "ftpuser"
+  password: "passwd"
+  protocol: "ftp"
+
+- name: "secure"
+  hostname: "127.0.0.1"
+  port: 22
+  username: "ftpuser"
+  password: "passwd"
+  protocol: "sftp"
+
+# Shipper modes:
+#  import
+#  export
+services:
+- name: "service name"
+  ftpConfig: [test]
+  mode: import
+  sourceFolder: "/remote/logs"
+  destinationFolder: "/local"
+  filePrefix: "file-"
+  fileExtension: "txt"
+  historyFolder: "/remote/send"
+  maxTime: 123
+  windowLimit: 1
+
+- name: "service name"
+  ftpConfig: [secure]
+  mode: export
+  sourceFolder: "/local/upload"
+  destinationFolder: "/remote/files"
+  filePrefix: "file-"
+  fileExtension: "txt"
+  historyFolder: "/local/uploaded"
+  maxTime: 123
+  windowLimit: 1

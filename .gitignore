@@ -1,0 +1,9 @@
+# ignore build artifacts
+build/artifacts/
+
+
+## Ignore Local test
+test/local/*
+# Except the following
+!test/local/launch-ftp-server.sh
+!test/local/prep-data.bash
