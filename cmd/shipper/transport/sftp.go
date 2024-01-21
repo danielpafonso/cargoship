@@ -1,14 +1,15 @@
 package transport
 
 import (
-	"cargoship/internal/configurations"
-	"cargoship/internal/files"
-	"cargoship/internal/logging"
-	"cargoship/internal/manifests"
 	"fmt"
 	"io"
 	"log"
 	"os"
+
+	"cargoship/internal/configurations"
+	"cargoship/internal/files"
+	"cargoship/internal/logging"
+	"cargoship/internal/manifests"
 
 	"github.com/pkg/sftp"
 )
