@@ -13,6 +13,7 @@ type Logger struct {
 	logger *log.Logger
 }
 
+// Init initiates the logger file
 func (l *Logger) Init(path string, toConsole bool) {
 	var err error
 	// check folder
@@ -33,22 +34,27 @@ func (l *Logger) Init(path string, toConsole bool) {
 	}
 }
 
+// LogDebug logs message with debug level
 func (l *Logger) LogDebug(message string) {
 	l.logger.Printf("DEBUG %s", message)
 }
 
+// LogInfo logs message with info level
 func (l *Logger) LogInfo(message string) {
 	l.logger.Printf("INFO %s", message)
 }
 
+// LogWarn logs message with warning level
 func (l *Logger) LogWarn(message string) {
 	l.logger.Printf("WARN %s", message)
 }
 
+// LogError logs message with error level
 func (l *Logger) LogError(message string) {
 	l.logger.Printf("ERROR %s", message)
 }
 
+// Close closes log file, if no lines were written the log file is deleted
 func (l *Logger) Close() {
 	// get file status
 	info, _ := l.file.Stat()

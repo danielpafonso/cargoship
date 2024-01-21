@@ -15,6 +15,7 @@ type shipperFileManifest struct {
 	Time    string `yaml:"time"`
 }
 
+// ShipperManifest store files times (manifest) for export and import services
 type ShipperManifest struct {
 	Ftp     string
 	Mode    string
@@ -22,6 +23,7 @@ type ShipperManifest struct {
 	Time    time.Time
 }
 
+// ShipperReadTimes read manifest files
 func ShipperReadTimes(filepath string) ([]ShipperManifest, error) {
 	// create empty readConfig
 	var readConfig []shipperFileManifest
@@ -54,6 +56,7 @@ func ShipperReadTimes(filepath string) ([]ShipperManifest, error) {
 	return config, nil
 }
 
+// ShipperGetTimes search manifest and returns date from last process file, or "empty" date if service isn't stored
 func ShipperGetTimes(ftpTimes []ShipperManifest, server string, mode string, service string) time.Time {
 	for _, elm := range ftpTimes {
 		if elm.Ftp == server && elm.Service == service && elm.Mode == mode {
@@ -63,6 +66,7 @@ func ShipperGetTimes(ftpTimes []ShipperManifest, server string, mode string, ser
 	return time.Date(1, 1, 1, 0, 0, 0, 0, time.UTC)
 }
 
+// ShipperUpsertTimes insert/update serice manifest
 func ShipperUpsertTimes(config *[]ShipperManifest, ftp string, mode string, service string, times time.Time) {
 	for idx, filetimes := range *config {
 		if filetimes.Ftp == ftp && filetimes.Mode == mode && filetimes.Service == service {
@@ -74,6 +78,7 @@ func ShipperUpsertTimes(config *[]ShipperManifest, ftp string, mode string, serv
 	*config = append(*config, ShipperManifest{Ftp: ftp, Mode: mode, Service: service, Time: times})
 }
 
+// ShipperWriteTimes writes files manivest to file
 func ShipperWriteTimes(ftpTimes *[]ShipperManifest, filepath string) error {
 	fileData := make([]shipperFileManifest, len(*ftpTimes))
 	for idx, stamp := range *ftpTimes {
