@@ -32,8 +32,9 @@ func compressFile(filename string, service configurations.LoaderServiceConfig) e
 	if err != nil {
 		return err
 	}
-	// archive file
+	defer localFile.Close()
 	archiver := gzip.NewWriter(dstFile)
+	defer archiver.Close()
 
 	written, err := io.Copy(archiver, localFile)
 	if err != nil {
