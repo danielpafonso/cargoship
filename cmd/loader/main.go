@@ -1,8 +1,10 @@
 package main
 
 import (
+	"compress/gzip"
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"os"
 
@@ -17,13 +19,37 @@ var (
 	filesLogger  logging.Logger
 )
 
-func compressFile(filepath string) error {
+func compressFile(filename string, service configurations.LoaderServiceConfig) error {
+	srcPath := fmt.Sprintf("%s/%s", service.Src, filename)
+	dstPath := fmt.Sprintf("%s/%s.gz", service.Dst, filename)
 	// compress files
-	fmt.Printf("compress %s\n", filepath)
+	dstFile, err := os.Create(dstPath)
+	if err != nil {
+		return err
+	}
+	// local file
+	localFile, err := os.Open(srcPath)
+	if err != nil {
+		return err
+	}
+	// archive file
+	archiver := gzip.NewWriter(dstFile)
+
+	written, err := io.Copy(archiver, localFile)
+	if err != nil {
+		return err
+	}
+	// delete source file
+	err = os.Remove(srcPath)
+	if err != nil {
+		return err
+	}
+	filesLogger.LogInfo(fmt.Sprintf("Compress %s, written %d\n", dstPath, written))
 	return nil
 }
 
-func cleanFile(filepath string) error {
+func cleanFile(filename string, service configurations.LoaderServiceConfig) error {
+	filepath := fmt.Sprintf("%s/%s", service.Src, filename)
 	// clean files
 	err := os.Remove(filepath)
 	if err == nil {
@@ -70,7 +96,7 @@ func main() {
 	// process services
 	for _, service := range configs.Services {
 		scriptLogger.LogInfo(fmt.Sprintf("Processing service: %s\n", service.Name))
-		var processFile func(string) error
+		var processFile func(string, configurations.LoaderServiceConfig) error
 		if service.Mode == "compress" {
 			// set processFile function to compressFile
 			processFile = compressFile
@@ -93,17 +119,20 @@ func main() {
 		lastFile := manifests.LoaderGetTimes(&manifest, service.Name, service.Mode)
 		files2Process = files.DateFilterLocalDirectory(files2Process, lastFile, service.MaxTime, service.Window)
 		lastFileProcess := lastFile
+		filesProcessed := 0
 		for _, file := range files2Process {
-			filepath := fmt.Sprintf("%s/%s", service.Src, file.Name())
 			// if compress compress
-			err = processFile(filepath)
+			err = processFile(file.Name(), service)
 			if err != nil {
 				scriptLogger.LogError(err.Error())
+			} else {
+				filesProcessed += 1
 			}
 			//update
 			lastFileProcess = file.ModTime()
 		}
 
+		scriptLogger.LogInfo(fmt.Sprintf("%d file(s) Processed", filesProcessed))
 		// update last process file
 		if lastFileProcess != lastFile {
 			manifests.LoaderUpsertTimes(&manifest, service.Name, service.Mode, lastFileProcess)
