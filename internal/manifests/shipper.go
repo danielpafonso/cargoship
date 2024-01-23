@@ -78,7 +78,7 @@ func ShipperUpsertTimes(config *[]ShipperManifest, ftp string, mode string, serv
 	*config = append(*config, ShipperManifest{Ftp: ftp, Mode: mode, Service: service, Time: times})
 }
 
-// ShipperWriteTimes writes files manivest to file
+// ShipperWriteTimes writes files manifest to file
 func ShipperWriteTimes(ftpTimes *[]ShipperManifest, filepath string) error {
 	fileData := make([]shipperFileManifest, len(*ftpTimes))
 	for idx, stamp := range *ftpTimes {

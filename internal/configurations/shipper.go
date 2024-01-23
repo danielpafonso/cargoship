@@ -1,10 +1,7 @@
 package configurations
 
 import (
-	"fmt"
 	"os"
-	"strings"
-	"time"
 
 	"gopkg.in/yaml.v3"
 )
@@ -12,7 +9,7 @@ import (
 // shipperFileConfig structure describing configuration file
 type shipperFileConfig struct {
 	Log2Console bool   `yaml:"log2console"`
-	TimesPath   string `yaml:"timesFilePath"`
+	TimesPath   string `yaml:"manifest"`
 	Log         struct {
 		Script string `yaml:"script"`
 		Files  string `yaml:"files"`
@@ -63,30 +60,15 @@ type FtpConfig struct {
 	Services []ShipperService
 }
 
-// ShipperConfig describer shipper run configuration
+// ShipperConfig describes shipper run configuration
 type ShipperConfig struct {
 	Log2Console bool
 	TimesPath   string
 	Log         struct {
-		Script string `yaml:"script"`
-		Files  string `yaml:"files"`
-	} `yaml:"logging"`
-	Ftps []FtpConfig
-}
-
-func replaceDatePlaceholder(filename string) string {
-	start := strings.Index(filename, "{")
-	end := strings.Index(filename, "}")
-	if start != -1 && end != -1 {
-		dateFormat := filename[start+1 : end]
-		return fmt.Sprintf(
-			"%s%s%s",
-			filename[:start],
-			time.Now().UTC().Format(dateFormat),
-			filename[end+1:],
-		)
+		Script string
+		Files  string
 	}
-	return filename
+	Ftps []FtpConfig
 }
 
 // ShipperReadConfig reads file configuration and return object/structure with shipper conconfiguration
@@ -109,8 +91,8 @@ func ShipperReadConfig(filepath string) (*ShipperConfig, error) {
 		Log2Console: config.Log2Console,
 		TimesPath:   config.TimesPath,
 		Log: struct {
-			Script string `yaml:"script"`
-			Files  string `yaml:"files"`
+			Script string
+			Files  string
 		}{
 			Script: replaceDatePlaceholder(config.Log.Script),
 			Files:  replaceDatePlaceholder(config.Log.Files),
