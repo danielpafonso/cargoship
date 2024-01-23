@@ -1,6 +1,7 @@
 package main
 
 import (
+	"archive/zip"
 	"compress/gzip"
 	"flag"
 	"fmt"
@@ -20,22 +21,45 @@ var (
 )
 
 func compressFile(filename string, service configurations.LoaderServiceConfig) error {
-	srcPath := fmt.Sprintf("%s/%s", service.Src, filename)
-	dstPath := fmt.Sprintf("%s/%s.gz", service.Dst, filename)
-	// compress files
-	dstFile, err := os.Create(dstPath)
-	if err != nil {
-		return err
+	var dstPath string
+	var archiver io.Writer
+
+	if service.Archive == "gzip" {
+		dstPath = fmt.Sprintf("%s/%s.gz", service.Dst, filename)
+		// create archive file
+		dstFile, err := os.Create(dstPath)
+		if err != nil {
+			return err
+		}
+		archive := gzip.NewWriter(dstFile)
+		defer archive.Close()
+		archiver = archive
+	} else if service.Archive == "zip" {
+		dstPath = fmt.Sprintf("%s/%s.zip", service.Dst, filename)
+		// create archive file
+		dstFile, err := os.Create(dstPath)
+		if err != nil {
+			return err
+		}
+		archive := zip.NewWriter(dstFile)
+		defer archive.Close()
+		archiver, err = archive.Create(filename)
+		if err != nil {
+			return err
+		}
+	} else {
+		return fmt.Errorf("unknown archive, %s", service.Archive)
 	}
+
 	// local file
+	srcPath := fmt.Sprintf("%s/%s", service.Src, filename)
 	localFile, err := os.Open(srcPath)
 	if err != nil {
 		return err
 	}
 	defer localFile.Close()
-	archiver := gzip.NewWriter(dstFile)
-	defer archiver.Close()
 
+	// archive file
 	written, err := io.Copy(archiver, localFile)
 	if err != nil {
 		return err

@@ -14,6 +14,7 @@ type LoaderServiceConfig struct {
 	Dst       string `yaml:"destinationFolder"`
 	Prefix    string `yaml:"filePrefix"`
 	Extension string `yaml:"fileExtension"`
+	Archive   string `yaml:"archive"`
 	MaxTime   int    `yaml:"maxTime"`
 	Window    int    `yaml:"windowLimit"`
 }
