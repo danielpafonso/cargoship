@@ -10,13 +10,6 @@ import (
 	"cargoship/internal/configurations"
 )
 
-var (
-	uncompressMap = map[string]int{
-		"ungz":  1,
-		"unzip": 1,
-	}
-)
-
 func compressFile(filename string, service configurations.LoaderServiceConfig) error {
 	var dstPath string
 	var archiver io.Writer
