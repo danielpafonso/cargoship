@@ -15,9 +15,12 @@ logging:
 # Loader modes:
 #  compress
 #  cleaner
-## Archive algorithm:
-##  gzip
+## Compress algorithm:
+##  gz
 ##  zip
+## Decompress algorithm:
+##  ungz
+##  unzip
 services:
 - name: "delete"
   mode: cleaner
@@ -34,6 +37,6 @@ services:
   destinationFolder: "/local/logs/archive"
   filePrefix: "file-"
   fileExtension: "txt"
-  archive: "gzip"
+  archive: "gz"
   maxTime: 2
   windowLimit: 1

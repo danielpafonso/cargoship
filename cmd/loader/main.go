@@ -1,13 +1,11 @@
 package main
 
 import (
-	"archive/zip"
-	"compress/gzip"
 	"flag"
 	"fmt"
-	"io"
 	"log"
 	"os"
+	"strings"
 
 	"cargoship/internal/configurations"
 	"cargoship/internal/files"
@@ -19,59 +17,6 @@ var (
 	scriptLogger logging.Logger
 	filesLogger  logging.Logger
 )
-
-func compressFile(filename string, service configurations.LoaderServiceConfig) error {
-	var dstPath string
-	var archiver io.Writer
-
-	if service.Archive == "gzip" {
-		dstPath = fmt.Sprintf("%s/%s.gz", service.Dst, filename)
-		// create archive file
-		dstFile, err := os.Create(dstPath)
-		if err != nil {
-			return err
-		}
-		archive := gzip.NewWriter(dstFile)
-		defer archive.Close()
-		archiver = archive
-	} else if service.Archive == "zip" {
-		dstPath = fmt.Sprintf("%s/%s.zip", service.Dst, filename)
-		// create archive file
-		dstFile, err := os.Create(dstPath)
-		if err != nil {
-			return err
-		}
-		archive := zip.NewWriter(dstFile)
-		defer archive.Close()
-		archiver, err = archive.Create(filename)
-		if err != nil {
-			return err
-		}
-	} else {
-		return fmt.Errorf("unknown archive, %s", service.Archive)
-	}
-
-	// local file
-	srcPath := fmt.Sprintf("%s/%s", service.Src, filename)
-	localFile, err := os.Open(srcPath)
-	if err != nil {
-		return err
-	}
-	defer localFile.Close()
-
-	// archive file
-	written, err := io.Copy(archiver, localFile)
-	if err != nil {
-		return err
-	}
-	// delete source file
-	err = os.Remove(srcPath)
-	if err != nil {
-		return err
-	}
-	filesLogger.LogInfo(fmt.Sprintf("Compress %s, written %d\n", dstPath, written))
-	return nil
-}
 
 func cleanFile(filename string, service configurations.LoaderServiceConfig) error {
 	filepath := fmt.Sprintf("%s/%s", service.Src, filename)
@@ -123,8 +68,12 @@ func main() {
 		scriptLogger.LogInfo(fmt.Sprintf("Processing service: %s\n", service.Name))
 		var processFile func(string, configurations.LoaderServiceConfig) error
 		if service.Mode == "compress" {
-			// set processFile function to compressFile
-			processFile = compressFile
+			if strings.HasPrefix(service.Archive, "un") {
+				processFile = uncompressFile
+			} else {
+				// set processFile function to compressFile
+				processFile = compressFile
+			}
 			files.CheckLocalFolder(service.Dst)
 		} else if service.Mode == "cleaner" {
 			// set processFile function to cleanFile
