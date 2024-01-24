@@ -24,7 +24,6 @@ func sftpDownload(client *sftp.Client, source, destination string, logger loggin
 	defer srcFile.Close()
 
 	// create local writer
-	fmt.Println(destination)
 	localFile, err := os.Create(destination)
 	if err != nil {
 		return err
@@ -90,7 +89,6 @@ func SftpDownloadFiles(
 		}
 		// update
 		lastFileTime = entry.ModTime()
-		fmt.Println(lastFileTime)
 	}
 
 	// update last downloaded time
