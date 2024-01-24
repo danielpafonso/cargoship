@@ -40,3 +40,13 @@ services:
   archive: "gz"
   maxTime: 2
   windowLimit: 1
+
+- name: "decompress"
+  mode: compress
+  sourceFolder: "/local/logs/archive"
+  destinationFolder: "/local/logs"
+  filePrefix: "file-"
+  fileExtension: "zip"
+  archive: "unzip"
+  maxTime: 2
+  windowLimit: 1
