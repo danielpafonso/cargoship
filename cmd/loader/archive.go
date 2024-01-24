@@ -72,39 +72,46 @@ func compressFile(filename string, service configurations.LoaderServiceConfig) e
 
 func uncompressFile(filename string, service configurations.LoaderServiceConfig) error {
 	var dstPath string
-	var archiver io.Reader
+	var archiveFile io.Reader
 
-	// check if mode if valid
-	if _, ok := uncompressMap[service.Archive]; !ok {
-		return fmt.Errorf("unknown archive, %s", service.Archive)
-	}
-
-	// read archive file
 	srcPath := fmt.Sprintf("%s/%s", service.Src, filename)
-	archiveFile, err := os.Open(srcPath)
-	if err != nil {
-		return err
-	}
-	defer archiveFile.Close()
-
 	switch service.Archive {
 	case "ungz":
+		// read archive file
+		fileReader, err := os.Open(srcPath)
+		if err != nil {
+			return err
+		}
+		defer fileReader.Close()
 		// get output path
 		// EXT = .gz, len(EXT) = 3
 		dstPath = fmt.Sprintf("%s/%s", service.Dst, filename[:len(filename)-3])
 		// create gzip reader
-		reader, err := gzip.NewReader(archiveFile)
+		gzipReader, err := gzip.NewReader(fileReader)
 		if err != nil {
 			return err
 		}
-		defer reader.Close()
-		archiver = reader
+		defer gzipReader.Close()
+		archiveFile = gzipReader
+
 	case "unzip":
+		// open zip file
+		zipReader, err := zip.OpenReader(srcPath)
+		if err != nil {
+			return err
+		}
+		defer zipReader.Close()
+		fileReader, err := zipReader.Open(filename[:len(filename)-4])
+		if err != nil {
+			return err
+		}
+		defer fileReader.Close()
+
 		// get output path
 		// EXT = .zip, len(EXT) = 4
 		dstPath = fmt.Sprintf("%s/%s", service.Dst, filename[:len(filename)-4])
+		archiveFile = fileReader
 
-		// create zip reader
 	default:
 		return fmt.Errorf("unknown archive, %s", service.Archive)
 	}
@@ -115,7 +122,7 @@ func uncompressFile(filename string, service configurations.LoaderServiceConfig)
 		return err
 	}
 	// decompress file
-	written, err := io.Copy(uncompress, archiver)
+	written, err := io.Copy(uncompress, archiveFile)
 	if err != nil {
 		return err
 	}
