@@ -3,10 +3,10 @@
 Applications that Extract, Process, and Send files to and from FTP and SFTP servers
 
 | Components ||
-| --- | --- |
-| Shipper | Download and upload files to/from (S)FTP servers |
-| Loader | Compress and remove files from local storage |
-| ? | Apply file processors and generate new parsed files |
+| ---------- | --------------------------------------------------- |
+| Shipper    | Download and upload files to/from (S)FTP servers    |
+| Loader     | Compress and remove files from local storage        |
+| Packager   | Apply file processors and generate new parsed files |
 
 ## Timestamp formating
 
@@ -16,14 +16,14 @@ Since this project uses golang the timestamp formating is the same as golang's [
 
 For the more used formats see the table below:
 
-| Time Part | Value |
-|-----------|-------|
-| year      | 2006  |
-| month     | 01    |
-| day       | 02    |
-| hours     | 15    |
-| minutes   | 04    |
-| seconds   | 05    |
+| Time Part | Time format | Value |
+|-----------|-------------|-------|
+| year      | yyyy - 2020 | 2006  |
+| month     | mm   - 12   | 01    |
+| day       | dd   - 23   | 02    |
+| hours     | HH   - 14   | 15    |
+| minutes   | MM   - 59   | 04    |
+| seconds   | SS   - 45   | 05    |
 
 
 # Common Configuration Fields
