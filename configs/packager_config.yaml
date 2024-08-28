@@ -1,0 +1,41 @@
+log2console: true
+manifest: "packager-manifest.yaml"
+
+# Golang date formation
+#    year: 2006
+#   month: 01
+#     day: 02
+#   hours: 15
+# minutes: 04
+# seconds: 05
+logging:
+  script: "script_log/packager-logs_{2006010215}.log"
+  files: "script_log/packager-files_{2006010215}.log"
+
+# Packager modes:
+#  concat  - concatenate files
+#  comamnd - execute the command on the files
+services:
+  - name: "service name"
+    mode: concat
+    sourceFolder: "/logs"
+    filePrefix: "file-"
+    fileExtension: "txt"
+    destinationFolder: "/logs/concat"
+    destinationFile: "file_{1}_{2}.txt"
+    destinationDateFormat: "2006010215"
+    historyFolder: "/logs/history"
+    maxTime: 123
+    windowLimit: 1
+
+  - name: "service name"
+    mode: command
+    sourceFolder: "/logs"
+    filePrefix: "file-"
+    fileExtension: "txt"
+    destinationFolder: "/logs/parsed"
+    destinationFile: ""
+    destinationDateFormat: "2006010215"
+    historyFolder: "/logs/history"
+    maxTime: 123
+    windowLimit: 1
