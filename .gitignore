@@ -6,4 +6,5 @@ build/artifacts/
 test/local/*
 # Except the following
 !test/local/launch-ftp-server.sh
+!test/local/launch-sftp-server.sh
 !test/local/prep-data.bash
