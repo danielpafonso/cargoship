@@ -6,6 +6,13 @@ import (
 	"log"
 
 	"cargoship/internal/configurations"
+	"cargoship/internal/logging"
+	"cargoship/internal/manifests"
+)
+
+var (
+	scriptLogger logging.Logger
+	filesLogger  logging.Logger
 )
 
 func main() {
@@ -27,8 +34,24 @@ func main() {
 		log.Panic(err)
 	}
 
+	// start loggers
+	scriptLogger.Init(configs.Log.Script, configs.Log2Console)
+	filesLogger.Init(configs.Log.Files, configs.Log2Console)
+	defer scriptLogger.Close()
+	defer filesLogger.Close()
+
+	// read time state
+	times, err := manifests.PackagerReadTimes(configs.TimesPath)
+	if err != nil {
+		scriptLogger.LogError(err.Error())
+		panic(err)
+	}
+	// defer update/write time state file
+	defer manifests.PackagerWriteTimes(&times, configs.TimesPath)
+
+	// Process files"
 	fmt.Printf("%+v\n", configs)
-	for i := 0; i < len(configs.Services); i++ {
-		configs.Services[i].Execute()
+	for _, service := range configs.Services {
+		service.Execute()
 	}
 }

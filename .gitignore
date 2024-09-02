@@ -1,6 +1,5 @@
 # ignore build artifacts
-build/artifacts/
-
+build/*
 
 ## Ignore Local test
 test/local/*
