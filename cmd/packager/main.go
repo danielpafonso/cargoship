@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"cargoship/internal/configurations"
+	"cargoship/internal/files"
 	"cargoship/internal/logging"
 	"cargoship/internal/manifests"
 )
@@ -50,8 +51,24 @@ func main() {
 	defer manifests.PackagerWriteTimes(&times, configs.TimesPath)
 
 	// Process files"
-	fmt.Printf("%+v\n", configs)
 	for _, service := range configs.Services {
-		service.Execute()
+		scriptLogger.LogInfo(fmt.Sprintf("Processing serice %s\n", service.Name))
+		// set execute function
+
+		// list local files
+		files2Process, err := files.ListLocalDirectory(service.Name, service.Prefix, service.Mode)
+		if err != nil {
+			scriptLogger.LogError(err.Error())
+			continue
+		}
+		// get last process file
+		lastFileTime := manifests.PackagerGetTimes(&times, service.Name, service.Mode)
+		// update list of local files
+		files2Process = files.DateFilterLocalDirectory(files2Process, lastFileTime, service.MaxTime, service.Window)
+
+		// process files
+		lastFileProcess := lastFileTime
+		filesProcessed := 0
+
 	}
 }
