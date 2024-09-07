@@ -15,6 +15,9 @@ logging:
 # Packager modes:
 #  concat  - concatenate files
 #  comamnd - execute the command on the files
+#  Placeholders in destination file:
+#    {date}  - current datetime
+#    {files} - number of processed files
 services:
   - name: "service name"
     mode: concat
