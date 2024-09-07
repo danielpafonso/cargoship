@@ -52,11 +52,11 @@ func main() {
 
 	// Process files"
 	for _, service := range configs.Services {
-		scriptLogger.LogInfo(fmt.Sprintf("Processing serice %s\n", service.Name))
+		scriptLogger.LogInfo(fmt.Sprintf("Processing service %s\n", service.Name))
 		// set execute function
 
 		// list local files
-		files2Process, err := files.ListLocalDirectory(service.Name, service.Prefix, service.Mode)
+		files2Process, err := files.ListLocalDirectory(service.Src, service.Prefix, service.Extension)
 		if err != nil {
 			scriptLogger.LogError(err.Error())
 			continue
@@ -70,5 +70,23 @@ func main() {
 		lastFileProcess := lastFileTime
 		filesProcessed := 0
 
+		for _, file := range files2Process {
+			// process file
+			fmt.Println(file.Name())
+			err = nil
+			if err != nil {
+				scriptLogger.LogError(err.Error())
+			} else {
+				filesProcessed += 1
+			}
+			// update processed file
+			lastFileProcess = file.ModTime()
+		}
+
+		scriptLogger.LogInfo(fmt.Sprintf("%d files(s) Processed", filesProcessed))
+		// update last process file
+		if lastFileProcess != lastFileTime {
+			manifests.PackagerUpsertTimes(&times, service.Name, service.Mode, lastFileProcess)
+		}
 	}
 }
