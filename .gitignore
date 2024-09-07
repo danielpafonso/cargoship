@@ -7,3 +7,4 @@ test/local/*
 !test/local/launch-ftp-server.sh
 !test/local/launch-sftp-server.sh
 !test/local/prep-data.bash
+!test/local/lorem.txt
