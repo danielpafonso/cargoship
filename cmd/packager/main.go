@@ -66,21 +66,16 @@ func main() {
 		// update list of local files
 		files2Process = files.DateFilterLocalDirectory(files2Process, lastFileTime, service.MaxTime, service.Window)
 
-		// process files
-		lastFileProcess := lastFileTime
-		filesProcessed := 0
+		if len(files2Process) == 0 {
+			// short circuit since no files to process
+			scriptLogger.LogInfo("0 files(s) Processed")
+			return
+		}
 
-		for _, file := range files2Process {
-			// process file
-			fmt.Println(file.Name())
-			err = nil
-			if err != nil {
-				scriptLogger.LogError(err.Error())
-			} else {
-				filesProcessed += 1
-			}
-			// update processed file
-			lastFileProcess = file.ModTime()
+		// process files
+		lastFileProcess, filesProcessed, err := ConcatFiles(files2Process, lastFileTime, service, scriptLogger)
+		if err != nil {
+			panic(err)
 		}
 
 		scriptLogger.LogInfo(fmt.Sprintf("%d files(s) Processed", filesProcessed))
