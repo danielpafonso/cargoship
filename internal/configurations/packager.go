@@ -46,5 +46,10 @@ func PackagerReadConfig(filepath string) (*PackagerConfig, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	// replace date format strings
+	config.Log.Script = replaceDatePlaceholder(config.Log.Script)
+	config.Log.Files = replaceDatePlaceholder(config.Log.Files)
+
 	return &config, nil
 }
