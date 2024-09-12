@@ -28,6 +28,7 @@ services:
     destinationFile: "file_{1}_{2}.txt"
     destinationDateFormat: "2006010215"
     historyFolder: "/logs/history"
+    newline: false
     maxTime: 123
     windowLimit: 1
 
@@ -40,5 +41,6 @@ services:
     destinationFile: ""
     destinationDateFormat: "2006010215"
     historyFolder: "/logs/history"
+    newline: true
     maxTime: 123
     windowLimit: 1

@@ -43,6 +43,10 @@ func ConcatFiles(filesProcess []os.FileInfo, lastProcessedTime time.Time, servic
 			logger.LogError(err.Error())
 			os.Remove(tmpOutput.Name())
 		}
+		// Add newline if defined
+		if serviceConfig.Newline {
+			tmpOutput.WriteString("\n")
+		}
 		// update processed stat
 		filesProcessed += 1
 		lastProcessedTime = file.ModTime()

@@ -4,6 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
+	"time"
 
 	"cargoship/internal/configurations"
 	"cargoship/internal/files"
@@ -50,10 +52,20 @@ func main() {
 	// defer update/write time state file
 	defer manifests.PackagerWriteTimes(&times, configs.TimesPath)
 
-	// Process files"
+	var executeFunc func([]os.FileInfo, time.Time, configurations.Service, logging.Logger) (time.Time, int, error)
+	// Process files
 	for _, service := range configs.Services {
 		scriptLogger.LogInfo(fmt.Sprintf("Processing service %s\n", service.Name))
 		// set execute function
+		switch service.Mode {
+		case "concat":
+			executeFunc = ConcatFiles
+		case "command":
+			executeFunc = nil
+		default:
+			scriptLogger.LogWarn(fmt.Sprintf("Unkown mode, %s, on service %s.\n", service.Mode, service.Name))
+			continue
+		}
 
 		// list local files
 		files2Process, err := files.ListLocalDirectory(service.Src, service.Prefix, service.Extension)
@@ -73,7 +85,7 @@ func main() {
 		}
 
 		// process files
-		lastFileProcess, filesProcessed, err := ConcatFiles(files2Process, lastFileTime, service, scriptLogger)
+		lastFileProcess, filesProcessed, err := executeFunc(files2Process, lastFileTime, service, scriptLogger)
 		if err != nil {
 			panic(err)
 		}

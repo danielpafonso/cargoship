@@ -19,6 +19,7 @@ type Service struct {
 	History    string `yaml:"historyFolder"`
 	MaxTime    int    `yaml:"maxTime"`
 	Window     int    `yaml:"windowLimit"`
+	Newline    bool   `yaml:"newline"`
 }
 
 // PachagerConfig structure describing configuration file
