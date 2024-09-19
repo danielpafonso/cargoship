@@ -9,7 +9,9 @@ import (
 // Service runs concatenation on files as process
 type Service struct {
 	Name       string `yaml:"name"`
+	Enable     bool   `yaml:"enable"`
 	Mode       string `yaml:"mode"`
+	Command    string `yaml:"cmd"`
 	Src        string `yaml:"sourceFolder"`
 	Prefix     string `yaml:"filePrefix"`
 	Extension  string `yaml:"fileExtension"`

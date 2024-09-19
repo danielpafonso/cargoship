@@ -15,11 +15,14 @@ logging:
 # Packager modes:
 #  concat  - concatenate files
 #  comamnd - execute the command on the files
+#  Placeholders in comamnd to execute:
+#    {file} - current file, if no
 #  Placeholders in destination file:
 #    {date}  - current datetime
 #    {files} - number of processed files
 services:
   - name: "service name"
+    enable: true
     mode: concat
     sourceFolder: "/logs"
     filePrefix: "file-"
@@ -33,7 +36,9 @@ services:
     windowLimit: 1
 
   - name: "service name"
+    enable: true
     mode: command
+    cmd: "cat {file}"
     sourceFolder: "/logs"
     filePrefix: "file-"
     fileExtension: "txt"
@@ -41,6 +46,6 @@ services:
     destinationFile: ""
     destinationDateFormat: "2006010215"
     historyFolder: "/logs/history"
-    newline: true
+    newline: false
     maxTime: 123
     windowLimit: 1

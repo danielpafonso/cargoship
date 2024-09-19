@@ -55,13 +55,16 @@ func main() {
 	var executeFunc func([]os.FileInfo, time.Time, configurations.Service, logging.Logger) (time.Time, int, error)
 	// Process files
 	for _, service := range configs.Services {
+		if !service.Enable {
+			continue
+		}
 		scriptLogger.LogInfo(fmt.Sprintf("Processing service %s\n", service.Name))
 		// set execute function
 		switch service.Mode {
 		case "concat":
 			executeFunc = ConcatFiles
 		case "command":
-			executeFunc = nil
+			executeFunc = CommandFiles
 		default:
 			scriptLogger.LogWarn(fmt.Sprintf("Unkown mode, %s, on service %s.\n", service.Mode, service.Name))
 			continue
@@ -81,7 +84,7 @@ func main() {
 		if len(files2Process) == 0 {
 			// short circuit since no files to process
 			scriptLogger.LogInfo("0 files(s) Processed")
-			return
+			continue
 		}
 
 		// process files
