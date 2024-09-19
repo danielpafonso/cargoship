@@ -13,42 +13,42 @@ logging:
   files: "script_log/shipper-files_{2006010215}.log"
 
 ftps:
-- name: "test"
-  hostname: "127.0.0.1"
-  port: 21
-  username: "ftpuser"
-  password: "passwd"
-  protocol: "ftp"
+  - name: "test"
+    hostname: "127.0.0.1"
+    port: 21
+    username: "ftpuser"
+    password: "passwd"
+    protocol: "ftp"
 
-- name: "secure"
-  hostname: "127.0.0.1"
-  port: 22
-  username: "ftpuser"
-  password: "passwd"
-  protocol: "sftp"
+  - name: "secure"
+    hostname: "127.0.0.1"
+    port: 22
+    username: "ftpuser"
+    password: "passwd"
+    protocol: "sftp"
 
 # Shipper modes:
 #  import
 #  export
 services:
-- name: "service name"
-  ftpConfig: [test]
-  mode: import
-  sourceFolder: "/remote/logs"
-  destinationFolder: "/local"
-  filePrefix: "file-"
-  fileExtension: "txt"
-  historyFolder: "/remote/send"
-  maxTime: 123
-  windowLimit: 1
+  - name: "service name"
+    ftpConfig: [test]
+    mode: import
+    sourceFolder: "/remote/logs"
+    destinationFolder: "/local"
+    filePrefix: "file-"
+    fileExtension: "txt"
+    historyFolder: "/remote/send"
+    maxTime: 123
+    windowLimit: 1
 
-- name: "service name"
-  ftpConfig: [secure]
-  mode: export
-  sourceFolder: "/local/upload"
-  destinationFolder: "/remote/files"
-  filePrefix: "file-"
-  fileExtension: "txt"
-  historyFolder: "/local/uploaded"
-  maxTime: 123
-  windowLimit: 1
+  - name: "service name"
+    ftpConfig: [secure]
+    mode: export
+    sourceFolder: "/local/upload"
+    destinationFolder: "/remote/files"
+    filePrefix: "file-"
+    fileExtension: "txt"
+    historyFolder: "/local/uploaded"
+    maxTime: 123
+    windowLimit: 1

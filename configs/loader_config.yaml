@@ -22,31 +22,31 @@ logging:
 ##  ungz
 ##  unzip
 services:
-- name: "delete"
-  mode: cleaner
-  sourceFolder: "/local/logs"
-  # destinationFolder: "./dst"
-  filePrefix: "file-"
-  fileExtension: "txt"
-  maxTime: 1
-  windowLimit: 1
+  - name: "delete"
+    mode: cleaner
+    sourceFolder: "/local/logs"
+    # destinationFolder: "./dst"
+    filePrefix: "file-"
+    fileExtension: "txt"
+    maxTime: 1
+    windowLimit: 1
 
-- name: "archive"
-  mode: compress
-  sourceFolder: "/local/logs"
-  destinationFolder: "/local/logs/archive"
-  filePrefix: "file-"
-  fileExtension: "txt"
-  archive: "gz"
-  maxTime: 2
-  windowLimit: 1
+  - name: "archive"
+    mode: compress
+    sourceFolder: "/local/logs"
+    destinationFolder: "/local/logs/archive"
+    filePrefix: "file-"
+    fileExtension: "txt"
+    archive: "gz"
+    maxTime: 2
+    windowLimit: 1
 
-- name: "decompress"
-  mode: compress
-  sourceFolder: "/local/logs/archive"
-  destinationFolder: "/local/logs"
-  filePrefix: "file-"
-  fileExtension: "zip"
-  archive: "unzip"
-  maxTime: 2
-  windowLimit: 1
+  - name: "decompress"
+    mode: compress
+    sourceFolder: "/local/logs/archive"
+    destinationFolder: "/local/logs"
+    filePrefix: "file-"
+    fileExtension: "zip"
+    archive: "unzip"
+    maxTime: 2
+    windowLimit: 1

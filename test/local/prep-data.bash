@@ -28,16 +28,18 @@ File Creation Window:
 7) Current and Future
 
 8) Number of files per folder
+9) Toogle file Contents (random, lorem)
 
-9) Execute
-0) Quit"
+0) Execute
+
+quit) exit"
 	# write options status
 	list=""
 	for a in "${MODE[@]}"
 	do
 		list="$list $a"
 	done
-	printf '\n Prefix folder:%s\n Selected folders:%s\n        Time Mode: %s\n  Number of files: %d\n' "$PREFIX" "$list" "$TIME" "$FILES"
+	printf '\n Prefix folder: %s\n Selected folders:%s\n        Time Mode: %s\n  Number of files: %d\n  Files Contents: %s\n' "$PREFIX" "$list" "$TIME" "$FILES" "$CONTENTS"
 	# check if any aditional message to write
 	if [ ! -z "$ERROR" ]
 	then
@@ -76,7 +78,11 @@ function write_files() {
 		stamp=$(date -d "${i} ${step}" '+%Y%m%d%H%M')
 		echo "Writen ${prefix}${stamp}.${extension}"
 		# write file with data
-		head -c 10K /dev/urandom > "${prefix}${stamp}.${extension}"
+		if [ "$CONTENTS" == "Lorem" ]; then
+			cp lorem.txt "${prefix}${stamp}.${extension}"
+		else
+			head -c 10K /dev/urandom > "${prefix}${stamp}.${extension}"
+		fi
 		# change modification time
 		touch -t $stamp "${prefix}${stamp}.${extension}"
 	done
@@ -128,6 +134,7 @@ TIME="past"
 FILES=5
 ERROR=""
 PREFIX="${1:-ftpdata}"
+CONTENTS="Random"
 
 # create perfix folder
 mkdir -p $PREFIX
@@ -163,12 +170,19 @@ do
 			fi
 			;;
 		9)
+			if [ "$CONTENTS" == "Random" ]; then
+				CONTENTS="Lorem"
+			else
+				CONTENTS="Random"
+			fi
+			;;
+		0)
 			execute_actions
 			echo -e "\nPress any key to exit"
 			read -n1
 			break 2
 			;;
-		0)
+		"quit"|"q"|"exit")
 			break 2;;
 		*)
 			ERROR="${RED}ERROR${NC}: Invalid option ${opt}";;
