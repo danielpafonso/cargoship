@@ -24,6 +24,7 @@ type shipperFileConfig struct {
 	} `yaml:"ftps"`
 	Services []struct {
 		Name      string   `yaml:"name"`
+		Enable    bool     `yaml:"enable"`
 		Ftp       []string `yaml:"ftpConfig"`
 		Mode      string   `yaml:"mode"`
 		Src       string   `yaml:"sourceFolder"`
@@ -39,6 +40,7 @@ type shipperFileConfig struct {
 // ShipperService describes service configurations
 type ShipperService struct {
 	Name      string
+	Enable    bool
 	Mode      string
 	Src       string
 	Dst       string
@@ -117,6 +119,7 @@ func ShipperReadConfig(filepath string) (*ShipperConfig, error) {
 	for _, service := range config.Services {
 		match := ShipperService{
 			Name:      service.Name,
+			Enable:    service.Enable,
 			Mode:      service.Mode,
 			Src:       service.Src,
 			Dst:       service.Dst,

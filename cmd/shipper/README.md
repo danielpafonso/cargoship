@@ -18,6 +18,7 @@ Scripts to extract and sends files to ftps and sftp servers
 | &ensp; protocol          | string        | Server trasferer protocol: ftp, sftp                                                                                                                 |
 | services                 | array         |                                                                                                                                                      |
 | &ensp; name              | string        | Service identifier name                                                                                                                              |
+| &ensp; enable            | boolean       | Flag to enable the servic ro run                                                                                                                     |
 | &ensp; ftpConfig         | string array  | List of servers to run the services againts                                                                                                          |
 | &ensp; sourceFolder      | string        | Source Folder                                                                                                                                        |
 | &ensp; destinationFolder | string        | Destination Folder                                                                                                                                   |

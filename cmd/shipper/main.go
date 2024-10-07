@@ -38,6 +38,9 @@ func ftpServer(server configurations.FtpConfig, times *[]manifests.ShipperManife
 	}
 	// service loop
 	for _, service := range server.Services {
+		if !service.Enable {
+			continue
+		}
 		if service.Mode == "import" {
 			transport.DownloadFiles(server.Name, conn, service, times, scriptLogger, filesLogger)
 		} else if service.Mode == "export" {
@@ -74,6 +77,9 @@ func sftpServer(server configurations.FtpConfig, times *[]manifests.ShipperManif
 	defer client.Close()
 	// service loop
 	for _, service := range server.Services {
+		if !service.Enable {
+			continue
+		}
 		if service.Mode == "import" {
 			transport.SftpDownloadFiles(server.Name, client, service, times, scriptLogger, filesLogger)
 		} else if service.Mode == "export" {

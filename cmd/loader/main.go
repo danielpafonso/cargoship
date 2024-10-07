@@ -65,6 +65,9 @@ func main() {
 
 	// process services
 	for _, service := range configs.Services {
+		if !service.Enable {
+			continue
+		}
 		scriptLogger.LogInfo(fmt.Sprintf("Processing service: %s\n", service.Name))
 		var processFile func(string, configurations.LoaderServiceConfig) error
 		if service.Mode == "compress" {
