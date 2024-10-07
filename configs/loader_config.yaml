@@ -23,6 +23,7 @@ logging:
 ##  unzip
 services:
   - name: "delete"
+    enable: true
     mode: cleaner
     sourceFolder: "/local/logs"
     # destinationFolder: "./dst"
@@ -32,6 +33,7 @@ services:
     windowLimit: 1
 
   - name: "archive"
+    enable: true
     mode: compress
     sourceFolder: "/local/logs"
     destinationFolder: "/local/logs/archive"
@@ -42,6 +44,7 @@ services:
     windowLimit: 1
 
   - name: "decompress"
+    enable: true
     mode: compress
     sourceFolder: "/local/logs/archive"
     destinationFolder: "/local/logs"

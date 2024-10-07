@@ -9,6 +9,7 @@ import (
 // LoaderServiceConfig stores service configuration
 type LoaderServiceConfig struct {
 	Name      string `yaml:"name"`
+	Enable    bool   `yaml:"enable"`
 	Mode      string `yaml:"mode"`
 	Src       string `yaml:"sourceFolder"`
 	Dst       string `yaml:"destinationFolder"`

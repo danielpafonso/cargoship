@@ -13,6 +13,7 @@ Script that compress and clean/delete files from local file system
 | &ensp; files             | string  | Path to processed files Logging, which can have a dynamic timestamp, see [Dynamic Timestamp](../../README.md#dynamic-timestamp) for more information |
 | services                 | array   |                                                                                                                                                      |
 | &ensp; name              | string  | Service identifier name                                                                                                                              |
+| &ensp; enable            | boolean | Flag to enable service to run                                                                                                                        |
 | &ensp; mode              | string  | List of services to execute againts                                                                                                                  |
 | &ensp; sourceFolder      | string  | Source Folder                                                                                                                                        |
 | &ensp; destinationFolder | string  | Destination Folder, only aplicable on compress mode                                                                                                  |
