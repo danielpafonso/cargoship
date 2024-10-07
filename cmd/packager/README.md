@@ -13,7 +13,9 @@ Script that process source files applying some command and generate a new concat
 | &ensp; files                 | string  | Path to processed files Logging, which can have a dynamic timestamp, see [Dynamic Timestamp](../../README.md#dynamic-timestamp) for more information |
 | services                     | array   |                                                                                                                                                      |
 | &ensp; name                  | string  | Service identifier name                                                                                                                              |
+| &ensp; enable                | boolean | Flag to enable service to run                                                                                                                        |
 | &ensp; mode                  | string  | Mode of processing files                                                                                                                             |
+| &ensp; cmd                   | string  | Command to run, on each file                                                                                                                         |
 | &ensp; sourceFolder          | string  | Source Folder                                                                                                                                        |
 | &ensp; filePrefix            | string  | Source File prefix, used for filtering files list                                                                                                    |
 | &ensp; fileExtension         | string  | Source File extension, used for filtering files list                                                                                                 |
