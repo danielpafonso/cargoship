@@ -1,6 +1,7 @@
 package files
 
 import (
+	"io"
 	"os"
 	"strings"
 	"time"
@@ -58,4 +59,27 @@ func DateFilterLocalDirectory(entries []os.FileInfo, lastTime time.Time, maxTime
 		}
 	}
 	return outputList
+}
+
+// MoveFile moves files across partitions and disk, since os.Rename can't
+func MoveFile(oldPath, newPath string) error {
+	inputFile, err := os.Open(oldPath)
+	if err != nil {
+		return err
+	}
+	outputFile, err := os.Create(newPath)
+	if err != nil {
+		return err
+	}
+	// copy
+	_, err = io.Copy(outputFile, inputFile)
+	if err != nil {
+		return err
+	}
+	// delete old file
+	err = os.Remove(oldPath)
+	if err != nil {
+		return err
+	}
+	return nil
 }

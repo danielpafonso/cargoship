@@ -26,3 +26,10 @@ Script that process source files applying some command and generate a new concat
 | &ensp; newline               | string  | Add newline after processing files                                                                                                                   |
 | &ensp; maxTime               | int     | Max time (minutes) windows of files to process, see [Time Windows](../../README.md#time-windows) for more information                                |
 | &ensp; windowLimit           | int     | Limit (minutes) in relation to NOW where newer files won't be process, see [Time Windows](../../README.md#time-windows) for more information         |
+
+## Destination file placeholders
+
+| Placeholder | Description                                                             |
+| ----------- | ----------------------------------------------------------------------- |
+| {date}      | Timestamp in UTC with format described in field `destinationDateFormat` |
+| {files}     | Number of file process in the run                                       |

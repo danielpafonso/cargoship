@@ -53,20 +53,21 @@ func ConcatFiles(filesProcess []os.FileInfo, lastProcessedTime time.Time, servic
 
 		// mode source to history folder
 		if serviceConfig.History != "" {
-			os.Rename(path.Join(serviceConfig.Src, file.Name()), path.Join(serviceConfig.History, file.Name()))
+			err = files.MoveFile(path.Join(serviceConfig.Src, file.Name()), path.Join(serviceConfig.History, file.Name()))
+			if err != nil {
+				return lastProcessedTime, 0, err
+			}
 		}
 	}
 	// generate output filename
 	outFileName := strings.Clone(serviceConfig.Output)
-	if strings.Contains(outFileName, "{date}") {
-		outFileName = strings.Replace(outFileName, "{date}", time.Now().UTC().Format(serviceConfig.DateFormat), 1)
-	}
-	if strings.Contains(outFileName, "{files}") {
-		outFileName = strings.Replace(outFileName, "{files}", fmt.Sprint(filesProcessed), 1)
-	}
+	outFileName = strings.Replace(outFileName, "{date}", time.Now().UTC().Format(serviceConfig.DateFormat), 1)
+	outFileName = strings.Replace(outFileName, "{files}", fmt.Sprint(filesProcessed), 1)
 
 	// move output file to destination
-	os.Rename(tmpOutput.Name(), path.Join(serviceConfig.Dst, outFileName))
-
+	err = files.MoveFile(tmpOutput.Name(), path.Join(serviceConfig.Dst, outFileName))
+	if err != nil {
+		return lastProcessedTime, 0, err
+	}
 	return lastProcessedTime, filesProcessed, nil
 }
