@@ -2,7 +2,7 @@
 
 .PHONY: build clean shipper loader packager
 
-FLAGS = -trimpath -a -ldflags '-w -s'
+FLAGS = -trimpath -ldflags '-w -s'
 
 all: clean build
 
