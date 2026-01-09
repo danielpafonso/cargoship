@@ -70,7 +70,9 @@ func main() {
 		}
 		scriptLogger.LogInfo(fmt.Sprintf("Processing service: %s\n", service.Name))
 		var processFile func(string, configurations.LoaderServiceConfig) error
-		if service.Mode == "compress" {
+
+		switch service.Mode {
+		case "compress":
 			if strings.HasPrefix(service.Archive, "un") {
 				processFile = uncompressFile
 			} else {
@@ -78,10 +80,10 @@ func main() {
 				processFile = compressFile
 			}
 			files.CheckLocalFolder(service.Dst)
-		} else if service.Mode == "cleaner" {
+		case "cleaner":
 			// set processFile function to cleanFile
 			processFile = cleanFile
-		} else {
+		default:
 			scriptLogger.LogWarn(fmt.Sprintf("ERROR: Unkown mode, %s, on service %s.\n", service.Mode, service.Name))
 			continue
 		}

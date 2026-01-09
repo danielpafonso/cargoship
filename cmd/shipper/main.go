@@ -41,11 +41,12 @@ func ftpServer(server configurations.FtpConfig, times *[]manifests.ShipperManife
 		if !service.Enable {
 			continue
 		}
-		if service.Mode == "import" {
+		switch service.Mode {
+		case "import":
 			transport.DownloadFiles(server.Name, conn, service, times, scriptLogger, filesLogger)
-		} else if service.Mode == "export" {
+		case "export":
 			transport.UploadFiles(server.Name, conn, service, times, scriptLogger, filesLogger)
-		} else {
+		default:
 			scriptLogger.LogWarn(
 				fmt.Sprintf("ERROR Unknown mode, %s, on service %s.\n", service.Mode, service.Name),
 			)
