@@ -8,11 +8,11 @@ Applications that Extract, Process, and Send files to and from FTP and SFTP serv
 | [Loader](cmd/loader/README.md)     | Compress and remove files from local storage        |
 | [Packager](cmd/packager/README.md) | Apply file processors and generate new parsed files |
 
-## Timestamp formating
+## Timestamp Formatting
 
-In configurations the files can be configurated with a dynamic timestamp that is replaced on file creation.
+In configurations the files can be configured with a dynamic timestamp that is replaced on file creation.
 
-Since this project uses golang the timestamp formating is the same as golang's [time package](https://pkg.go.dev/time#pkg-constants).
+Since this project uses golang the timestamp formatting is the same as golang's [time package](https://pkg.go.dev/time#pkg-constants).
 
 For the more used formats see the table below:
 
@@ -25,16 +25,30 @@ For the more used formats see the table below:
 | minutes   | MM   - 59   | 04    |
 | seconds   | SS   - 45   | 05    |
 
-# Common Configuration Fields
+## Building the Project
+
+To build all applications:
+
+```bash
+make build
+```
+
+To build individual applications:
+
+```bash
+make shipper   # Build only the shipper application
+make loader    # Build only the loader application
+make packager  # Build only the packager application
+```
+
+Built binaries will be placed in the `build/` directory along with their configuration files.
+
+## Common Configuration Fields
 
 ### maxTime
 
-> _add more info_
-
-Time limit calculating by using the first valid file to download and add minutes equal to maxTime value
+Maximum time window (in minutes) for processing files. This creates a time limit by using the first valid file to download and adding minutes equal to the maxTime value. Files outside this window will not be processed.
 
 ### windowLimit
 
-> _add more info_
-
-Time limit calculated by substratcing minutes equal to windowLimit value to current date
+Time limit (in minutes) relative to the current date/time. Files newer than this window will not be processed. This is calculated by subtracting minutes equal to windowLimit value from current date.

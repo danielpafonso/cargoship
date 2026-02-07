@@ -9,15 +9,15 @@ Script that compress and clean/delete files from local file system
 | log2console              | boolean | Flag indicating if the logging should be duplicated to the console                                                                                   |
 | manifest                 | string  | File Path to the Times File                                                                                                                          |
 | logging                  | object  |                                                                                                                                                      |
-| &ensp; script            | string  | Path to Script Logging, which can have a dynamic timestamp, see [Dynamic Timestamp](../../README.md#dynamic-timestamp) for more information          |
-| &ensp; files             | string  | Path to processed files Logging, which can have a dynamic timestamp, see [Dynamic Timestamp](../../README.md#dynamic-timestamp) for more information |
+| &ensp; script            | string  | Path to Script Logging, which can have a dynamic timestamp, see [Timestamp Formatting](../../README.md#timestamp-formatting) for more information    |
+| &ensp; files             | string  | Path to processed files Logging, which can have a dynamic timestamp, see [Timestamp Formatting](../../README.md#timestamp-formatting) for more information |
 | services                 | array   |                                                                                                                                                      |
 | &ensp; name              | string  | Service identifier name                                                                                                                              |
 | &ensp; enable            | boolean | Flag to enable service to run                                                                                                                        |
-| &ensp; mode              | string  | List of services to execute againts                                                                                                                  |
+| &ensp; mode              | string  | List of services to execute against                                                                                                                  |
 | &ensp; sourceFolder      | string  | Source Folder                                                                                                                                        |
-| &ensp; destinationFolder | string  | Destination Folder, only aplicable on compress mode                                                                                                  |
+| &ensp; destinationFolder | string  | Destination Folder, only applicable on compress mode                                                                                                 |
 | &ensp; filePrefix        | string  | File prefix to filter source files                                                                                                                   |
-| &ensp; fileExtension     | string  | File extention to filter source files                                                                                                                |
-| &ensp; maxTime           | int     | Max time (minutes) windows of files to process, see [Time Windows](../../README.md#time-windows) for more information                                |
-| &ensp; windowLimit       | int     | Limit (minutes) in relation to NOW where newer files won't be process, see [Time Windows](../../README.md#time-windows) for more information         |
+| &ensp; fileExtension     | string  | File extension to filter source files                                                                                                                |
+| &ensp; maxTime           | int     | Max time (minutes) windows of files to process, see [maxTime](../../README.md#maxtime) for more information                                          |
+| &ensp; windowLimit       | int     | Limit (minutes) in relation to NOW where newer files won't be process, see [windowLimit](../../README.md#windowlimit) for more information           |
