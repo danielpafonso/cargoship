@@ -1,6 +1,8 @@
 # CargoShip
 
-Applications that Extract, Process, and Send files to and from FTP and SFTP servers
+A suite of applications that Extract, Process, and Send files to and from FTP and SFTP servers
+
+CargoShip consists of three components that can work independently or together to create robust file processing pipelines:
 
 | Components                         |                                                     |
 | ---------------------------------- | --------------------------------------------------- |
@@ -10,31 +12,34 @@ Applications that Extract, Process, and Send files to and from FTP and SFTP serv
 
 ## Timestamp formating
 
-In configurations the files can be configurated with a dynamic timestamp that is replaced on file creation.
+Configurations files support dynamic timestamps that are replaced at runtime allowing creation of time-stamped log files or output files.
 
-Since this project uses golang the timestamp formating is the same as golang's [time package](https://pkg.go.dev/time#pkg-constants).
+CargoShip uses Go's [time package](https://pkg.go.dev/time#pkg-constants) formatting convention.
 
 For the more used formats see the table below:
 
 | Time Part | Time format | Value |
 | --------- | ----------- | ----- |
-| year      | yyyy - 2020 | 2006  |
-| month     | mm   - 12   | 01    |
-| day       | dd   - 23   | 02    |
-| hours     | HH   - 14   | 15    |
-| minutes   | MM   - 59   | 04    |
-| seconds   | SS   - 45   | 05    |
+| Year      | yyyy - 2020 | 2006  |
+| Month     | mm - 12     | 01    |
+| Day       | dd - 23     | 02    |
+| Hours     | HH - 14     | 15    |
+| Minutes   | MM - 59     | 04    |
+| Seconds   | SS - 45     | 05    |
 
 # Common Configuration Fields
 
 ### maxTime
 
-> _add more info_
-
-Time limit calculating by using the first valid file to download and add minutes equal to maxTime value
+Defines the maximum time window for processing files. When processing a batch of files, CargoShip identifies the timestamp of the first valid file and creates a time window extending `maxTime` minutes forward from that point. Only files within this window will be processed.
 
 ### windowLimit
 
-> _add more info_
+Defines how far back from the current time to look for files. This creates a time boundary by subtracting `windowLimit` minutes from the current date/time. Files newer than this boundary will be excluded from processing.
 
-Time limit calculated by substratcing minutes equal to windowLimit value to current date
+### Example
+
+```yaml
+maxTime: 120 # 2-hour processing window
+windowLimit: 15 # Skip files from last 15 minutes
+```

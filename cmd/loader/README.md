@@ -1,23 +1,33 @@
 # Loader
 
-Script that compress and clean/delete files from local file system
+Compresses and cleans up files from the local file system. It supports two modes of operation: archiving files into compressed archives, and deleting files after they've been processed.
+
+- **Compress Mode**: Create archives from source files matching specific patterns
+- **Clean Mode**: Delete files from specified directories
+- **Time-based Filtering**: Process only files within specified time windows
+- **Manifest Tracking**: Track processed files to avoid reprocessing
 
 ## Configuration
 
-| Field Name               | Type    | Description                                                                                                                                          |
-| ------------------------ | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| log2console              | boolean | Flag indicating if the logging should be duplicated to the console                                                                                   |
-| manifest                 | string  | File Path to the Times File                                                                                                                          |
-| logging                  | object  |                                                                                                                                                      |
-| &ensp; script            | string  | Path to Script Logging, which can have a dynamic timestamp, see [Dynamic Timestamp](../../README.md#dynamic-timestamp) for more information          |
-| &ensp; files             | string  | Path to processed files Logging, which can have a dynamic timestamp, see [Dynamic Timestamp](../../README.md#dynamic-timestamp) for more information |
-| services                 | array   |                                                                                                                                                      |
-| &ensp; name              | string  | Service identifier name                                                                                                                              |
-| &ensp; enable            | boolean | Flag to enable service to run                                                                                                                        |
-| &ensp; mode              | string  | List of services to execute againts                                                                                                                  |
-| &ensp; sourceFolder      | string  | Source Folder                                                                                                                                        |
-| &ensp; destinationFolder | string  | Destination Folder, only aplicable on compress mode                                                                                                  |
-| &ensp; filePrefix        | string  | File prefix to filter source files                                                                                                                   |
-| &ensp; fileExtension     | string  | File extention to filter source files                                                                                                                |
-| &ensp; maxTime           | int     | Max time (minutes) windows of files to process, see [Time Windows](../../README.md#time-windows) for more information                                |
-| &ensp; windowLimit       | int     | Limit (minutes) in relation to NOW where newer files won't be process, see [Time Windows](../../README.md#time-windows) for more information         |
+| Field Name               | Type    | Description                                                                                                     |
+| ------------------------ | ------- | --------------------------------------------------------------------------------------------------------------- |
+| log2console              | boolean | Flag indicating if the logging should be duplicated to the console                                              |
+| manifest                 | string  | File path to the manifest file that tracks processing state and timestamps                                      |
+| logging                  | object  |                                                                                                                 |
+| &ensp; script            | string  | Path to script execution log file, supports [dynamic timestamps](../../README.md#timestamp-formating)           |
+| &ensp; files             | string  | Path to processed files log, supports [dynamic timestamps](../../README.md#timestamp-formating)                 |
+| services                 | array   |                                                                                                                 |
+| &ensp; name              | string  | Service identifier name                                                                                         |
+| &ensp; enable            | boolean | Flag to enable service to run                                                                                   |
+| &ensp; mode              | string  | Operation mode: `"compress"` to archive files, `"clean"` to delete files                                        |
+| &ensp; sourceFolder      | string  | Path to the source directory containing files to process                                                        |
+| &ensp; destinationFolder | string  | Path to destination directory for compressed archives (required for compress mode)                              |
+| &ensp; filePrefix        | string  | Filter files by prefix (e.g., `"data_"` matches `data_2024.txt`). Leave empty to match all files                |
+| &ensp; fileExtension     | string  | Filter files by extension (e.g., `".txt"`, `".log"`). Leave empty to match all extensions                       |
+| &ensp; maxTime           | int     | Maximum time window in minutes for processing files. See [maxTime](../../README.md#maxtime) for details         |
+| &ensp; windowLimit       | int     | Exclude files newer than this many minutes from now. See [windowLimit](../../README.md#windowlimit) for details |
+
+### Mode Options
+
+- **`compress`**: Archives matching files into a `.tar.gz` file in the destination folder
+- **`clean`**: Deletes matching files from the source folder
