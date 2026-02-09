@@ -10,7 +10,7 @@ CargoShip consists of three components that can work independently or together t
 | [Loader](cmd/loader/README.md)     | Compress and remove files from local storage        |
 | [Packager](cmd/packager/README.md) | Apply file processors and generate new parsed files |
 
-## Timestamp formating
+## Timestamp formatting
 
 Configurations files support dynamic timestamps that are replaced at runtime allowing creation of time-stamped log files or output files.
 

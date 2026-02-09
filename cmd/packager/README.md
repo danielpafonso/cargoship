@@ -16,8 +16,8 @@ Processes files by applying commands to each file and concatenating the results 
 | log2console                  | boolean | Flag indicating if the logging should be duplicated to the console                                                     |
 | manifest                     | string  | File path to the manifest file that tracks processing state and timestamps                                             |
 | logging                      | object  |                                                                                                                        |
-| &ensp; script                | string  | Path to script execution log file, supports [dynamic timestamps](../../README.md#timestamp-formating)                  |
-| &ensp; files                 | string  | Path to processed files log, supports [dynamic timestamps](../../README.md#dtimestamp-formating)                       |
+| &ensp; script                | string  | Path to script execution log file, supports [dynamic timestamps](../../README.md#timestamp-formatting)                 |
+| &ensp; files                 | string  | Path to processed files log, supports [dynamic timestamps](../../README.md#dtimestamp-formatting)                      |
 | services                     | array   |                                                                                                                        |
 | &ensp; name                  | string  | Service identifier name                                                                                                |
 | &ensp; enable                | boolean | Flag to enable service to run                                                                                          |
